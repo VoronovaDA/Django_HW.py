@@ -55,16 +55,9 @@ class StockSerializer(serializers.ModelSerializer):
         # здесь вам надо обновить связанные таблицы
         # в нашем случае: таблицу StockProduct
         # с помощью списка positions
-        for product in positions:
-            stock_product_list = StockProduct.objects.filter(stock=stock.id, product=product['product'])
-            if stock_product_list:
-                stock_product = stock_product_list[0]
-                stock_product.quantity = product['quantity']
-                stock_product.price = product['price']
-                stock_product.save()
-            else:
-                StockProduct.objects.create(stock_id=stock.id,
-                                            product_id=product['product'].id,
-                                            quantity=product['quantity'],
-                                            price=product['price'])
+    def update(self, instance, validated_data):
+        positions = validated_data.pop('positions', [])
+        stock = super().update(instance, validated_data)
+        for position in positions:
+            StockProduct.objects.update_or_create(stock=stock, product=position['product'], defaults={'quantity': position['quantity'], 'price': position['price']})
         return stock
