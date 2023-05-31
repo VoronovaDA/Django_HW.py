@@ -22,9 +22,7 @@ class AdvertisementViewSet(ModelViewSet):
     serializer_class = AdvertisementSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = AdvertisementFilter
-
-    # TODO: настройте ViewSet, укажите атрибуты для кверисета,
-    #   сериализаторов и фильтров
+    
 
     def list(self, request, *args, **kwargs):
 
