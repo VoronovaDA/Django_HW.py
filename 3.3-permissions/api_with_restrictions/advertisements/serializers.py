@@ -1,9 +1,8 @@
 from django.contrib.auth.models import User
-from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from advertisements.models import Advertisement, FavoriteAdvertisement
+from advertisements.models import Advertisement
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -13,10 +12,6 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'username', 'first_name',
                   'last_name',)
-
-
-
-
 
 
 class AdvertisementSerializer(serializers.ModelSerializer):
@@ -29,7 +24,7 @@ class AdvertisementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Advertisement
         fields = ('id', 'title', 'description', 'creator',
-                  'status', 'created_at')
+                  'status', 'created_at', )
 
     def create(self, validated_data):
         """Метод для создания"""
@@ -47,17 +42,11 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         """Метод для валидации. Вызывается при создании и обновлении."""
 
         # TODO: добавьте требуемую валидацию
-        user = self.context['request'].user
-        count_open = len(user.advertisements.filter(status='OPEN'))
-        get_status = data.get('status')
-        if not get_status or get_status == 'OPEN':
-            if count_open >= 10:
-                raise ValidationError("You can't open more then 10 opened adv")
+
+        count = len(Advertisement.objects.filter(status='OPEN', creator=self.context["request"].user))
+        if count >= 10:
+            if self.context['request'].method == 'POST':
+                raise ValidationError('Maximum ads open.')
+            if self.context['request'].method == 'PATCH' and data.get('status') == 'OPEN':
+                raise ValidationError('Maximum ads open')
         return data
-
-
-class FavoriteAdvertisementSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = FavoriteAdvertisement
-        fields = '__all__'
