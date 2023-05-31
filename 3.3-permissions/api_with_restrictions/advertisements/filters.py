@@ -4,8 +4,7 @@ from advertisements.models import Advertisement, FavoriteAdvertisement
 
 class AdvertisementFilter(filters.FilterSet):
     """Фильтры для объявлений."""
-
-    # TODO: задайте требуемые фильтры
+    
     created_at = filters.DateFromToRangeFilter()
     creator = filters.NumberFilter()
 
