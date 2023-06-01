@@ -1,6 +1,0 @@
--r requirements.txt
-pytest
-pytest-django
-pytest-cov
-model_bakery
-
