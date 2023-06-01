@@ -54,11 +54,11 @@ def test_get(client, course_factory):
 def test_id_filter(client, course_factory):
     course = course_factory(_quantity=10)
 
-    request = client.get(f'/api/v1/courses/?id={course[5].id}')
+    request = client.get(f'/api/v1/courses/?id={course[2].id}')
     data = request.json()
 
     assert request.status_code == 200
-    assert data[0]['name'] == course[5].name
+    assert data[0]['name'] == course[2].name
 
 # проверка фильтрации списка курсов по name
 
@@ -66,11 +66,11 @@ def test_id_filter(client, course_factory):
 def test_name_filter(client, course_factory):
     course = course_factory(_quantity=10)
 
-    request = client.get(f'/api/v1/courses/?name={course[5].name}')
+    request = client.get(f'/api/v1/courses/?name={course[3].name}')
     data = request.json()
 
     assert request.status_code == 200
-    assert data[0]['name'] == course[5].name
+    assert data[0]['name'] == course[3].name
 
 # тест успешного создания курса
 
