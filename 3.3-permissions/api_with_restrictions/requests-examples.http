@@ -1,6 +1,6 @@
 # примеры API-запросов
 
-@baseUrl = http://localhost:8000/api
+@baseUrl = https://localhost:8000/api
 
 # получение объявлений
 GET {{baseUrl}}/advertisements/
