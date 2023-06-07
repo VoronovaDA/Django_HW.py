@@ -37,8 +37,8 @@ class AdvertisementSerializer(serializers.ModelSerializer):
 
         count = len(Advertisement.objects.filter(status='OPEN', creator=self.context["request"].user))
         if count >= 10:
-            if self.context['request'].method == 'POST':
-                raise ValidationError('Maximum ads open.')
+            if self.context['request'].method == 'POST' or data.get('status') == 'OPEN':
+    raise ValidationError('Maximum ads open')
             if self.context['request'].method in ['PATCH', 'PUT'] and data.get('status') == 'OPEN':
                 raise ValidationError('Maximum ads open')
         return data
