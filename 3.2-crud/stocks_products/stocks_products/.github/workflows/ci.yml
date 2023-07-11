@@ -33,20 +33,20 @@ jobs:
           --health-retries 5
     steps:
       -name: Проверка наличия изменений
-       uses: actions/checkout@v3
+        uses: actions/checkout@v3
 
       -name: Установка python и окружения
-       uses: actions/setup-python@v3
+        uses: actions/setup-python@v3
 
       -name: Установка зависимостей
-       run: pip install -r reguirements.txt
+        run: pip install -r reguirements.txt
 
       -name: Линтинг кода
-       run: flake8 logistic --exclude logistic/migrations --ignore=E501
+        run: flake8 logistic --exclude logistic/migrations --ignore=E501
 
       -name: Тестирование кода
-       run: python manage.py test
-       env:
+        run: python manage.py test
+        env:
           SEKRET_KEY: $ {{ env.SEKRET_KEY }}
           DEBUG: '0'
           DB_ENGIN: $ {{ env.DB_ENGIN }}
@@ -55,6 +55,14 @@ jobs:
           DB_PASSWORD: $ {{ env.DB_PASSWORD }}
           ALLOWED_HOSTS: $ {{ env.ALLOWED_HOSTS }}
           DB_PORT: $ {{ env.DB_PORT }}
+
+      - name: Деплой
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: expect /home/adilet/django_cicd/deploy.exp
          
 
 
