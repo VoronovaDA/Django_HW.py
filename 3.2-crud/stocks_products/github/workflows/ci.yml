@@ -1,8 +1,8 @@
 name: Django CICD
 
-on: 
+on:
   push:
-    branches: [ci]
+    branches: [ ci ]
 
 jobs:
   tests:
@@ -17,7 +17,7 @@ jobs:
       ALLOWED_HOSTS: $ {{ secrets.ALLOWED_HOSTS }}
       DB_HOST: $ {{ secrets.DB_HOST }}
       DB_PORT: $ {{ secrets.DB_PORT }}
-    services: 
+    services:
       postgres_main:
         image: postgres:12
         env:
@@ -33,16 +33,16 @@ jobs:
           --health-retries 5
     steps:
       -name: Проверка наличия изменений
-        uses: actions/checkout@v3
+      uses: actions/checkout@v3
 
       -name: Установка python и окружения
-        uses: actions/setup-python@v3
+      uses: actions/setup-python@v3
 
       -name: Установка зависимостей
-        run: pip install -r reguirements.txt
+      run: pip install -r reguirements.txt
 
       -name: Линтинг кода
-        run: flake8 logistic --exclude logistic/migrations --ignore=E501
+      run: flake8 logistic --exclude logistic/migrations --ignore=E501
 
       -name: Тестирование кода
         run: python manage.py test
@@ -56,14 +56,10 @@ jobs:
           ALLOWED_HOSTS: $ {{ env.ALLOWED_HOSTS }}
           DB_PORT: $ {{ env.DB_PORT }}
 
-      - name: Деплой
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          script: expect /home/darya/Django_HW.py/3.2-crud/stocks_products/deploy.exp
-         
-
-
-  
+        - name: Деплой
+          uses: appleboy/ssh-action@master
+          with:
+            host: ${{ secrets.SSH_HOST }}
+            username: ${{ secrets.SSH_USER }}
+            password: ${{ secrets.SSH_PASSWORD }}
+            script: expect /home/darya/Django_HW.py/3.2-crud/stocks_products/deploy.exp
