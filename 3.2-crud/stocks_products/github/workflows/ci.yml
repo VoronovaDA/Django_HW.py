@@ -10,7 +10,7 @@ jobs:
     env:
       SEKRET_KEY: $ {{ secrets.SEKRET_KEY }}
       DEBUG: '0'
-      DB_ENGIN: $ {{ secrets.DB_ENGIN }}
+      DB_ENGINE: $ {{ secrets.DB_ENGINE }}
       DB_NAME: $ {{ secrets.DB_NAME }}
       DB_USER: $ {{ secrets.DB_USER }}
       DB_PASSWORD: $ {{ secrets.DB_PASSWORD }}
@@ -49,7 +49,7 @@ jobs:
         env:
           SEKRET_KEY: $ {{ env.SEKRET_KEY }}
           DEBUG: '0'
-          DB_ENGIN: $ {{ env.DB_ENGIN }}
+          DB_ENGINE: $ {{ env.DB_ENGINE }}
           DB_NAME: $ {{ env.DB_NAME }}
           DB_USER: $ {{ env.DB_USER }}
           DB_PASSWORD: $ {{ env.DB_PASSWORD }}
